@@ -1,0 +1,44 @@
+# -*- mode: ruby -*-
+
+Vagrant.configure('2') do |config|
+  setup_script = 'sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-deu ghostscript'
+  config.vm.provision 'shell', inline: setup_script
+
+  config.vm.network 'forwarded_port', guest: 3000, host: 3000
+  config.vm.network 'forwarded_port', guest: 80, host: 8080
+
+  config.vm.synced_folder './', '/home/vagrant/tesseract', nfs: true
+
+  # http://stackoverflow.com/questions/21274437/vagrant-install-chef-client-on-top-of-base-image
+  config.omnibus.chef_version = :latest
+
+  config.vm.provision 'chef_solo' do |chef|
+    chef.add_recipe 'git'
+    chef.add_recipe 'nodejs'
+    chef.add_recipe 'mongodb'
+  end
+
+  config.vm.provision 'shell' do |chef|
+    chef.path = 'provisioning/apache.sh'
+  end
+
+  config.vm.define 'tesseract3' do |ts3|
+    ts3.vm.hostname = 'tesseract3'
+    ts3.vm.box = 'ubuntu/xenial64'
+    ts3.vm.provider :virtualbox do |vb|
+      vb.name = 'tesseract3'
+    end
+
+    ts3.vm.network 'private_network', ip: '192.168.33.103'
+  end
+
+  config.vm.define 'tesseract4' do |ts4|
+    ts4.vm.hostname = 'tesseract4'
+    ts4.vm.box = 'ubuntu/bionic64'
+    ts4.vm.provider :virtualbox do |vb|
+      vb.name = 'tesseract4'
+    end
+
+    ts4.vm.network 'private_network', ip: '192.168.33.104'
+  end
+end

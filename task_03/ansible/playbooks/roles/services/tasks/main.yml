@@ -1,0 +1,13 @@
+---
+
+- include: stop.yml
+
+- name: clone application
+  git: 
+    repo: file:///home/arbox/playground/dockerized_app.git
+    dest: /{{ project_name }}
+    update: yes
+    force: yes
+
+- include: start.yml
+

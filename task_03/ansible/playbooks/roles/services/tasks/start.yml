@@ -1,0 +1,11 @@
+---
+
+- name: run all services
+  docker_service:
+    project_name: "{{ project_name }}"
+    project_src: /{{ project_name }}
+    pull: yes
+    files:
+    - docker-compose.yml
+  become: true
+

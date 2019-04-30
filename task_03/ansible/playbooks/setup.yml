@@ -1,0 +1,7 @@
+---
+- hosts: production
+  become: true
+
+  roles:
+    - common
+    - geerlingguy.docker

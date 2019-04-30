@@ -1,0 +1,12 @@
+vm ansible_ssh_host=localhost ansible_ssh_port=2222 ansible_ssh_user=vagrant
+app ansible_ssh_host=localhost ansible_ssh_port=2223 ansible_ssh_user=vagrant
+db ansible_ssh_host=localhost ansible_ssh_port=2224 ansible_ssh_user=vagrant
+
+[production]
+vm
+
+[webservers]
+app
+
+[dbservers]
+db

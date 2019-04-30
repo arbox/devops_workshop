@@ -1,0 +1,23 @@
+---
+
+- name: install packages
+  apt: name={{ item }} update_cache=yes state=latest
+  with_items:
+    - mc
+    - ncdu
+    - htop
+    - vim
+    - python-setuptools
+    - python-pip
+  become: true
+- name: install docker-py package
+  pip: name=docker
+-name: install docker-compose package
+  pip:: name=docker-compose
+- name: create project dir
+  file:
+    path: /{{ project_name }}
+    state: directory
+    mode: 0755
+    owner: vagrant
+  become: true

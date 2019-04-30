@@ -1,0 +1,5 @@
+.git
+config/database.yml
+.envrc
+.env
+.ruby-version
